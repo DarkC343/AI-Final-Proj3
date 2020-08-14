@@ -1,0 +1,28 @@
+body{
+    background: #ddd;
+}
+ 
+.chessboard {
+    display: inline-block;
+}
+ 
+div {
+}
+ 
+span {
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+}
+ 
+.black {
+    background: black;
+}
+ 
+.white {
+    background: white;
+}
+
+table, th, td {
+	border: 1px solid black;
+}

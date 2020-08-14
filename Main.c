@@ -33,6 +33,10 @@ void insert_population(population_t* population, chromosome_t* chromosome) {
 }
 
 void free_population(population_t* population) {
+	for (int i = 0; i < 8; i++)
+	{
+		free(population->chromosomes[i]);
+	}
 	free(population->chromosomes);
 	population->chromosomes = NULL;
 	population->used = population->size = 0;
@@ -163,6 +167,8 @@ int main()
 	// create zeroth (random) generation
 	generate_population(population);
 
+	FILE* file = fopen("output.json", "w");
+
 	// check for zeroth generation
 	for (int i = 0; i < 8; i++)
 	{
@@ -177,6 +183,7 @@ int main()
 		}
 	}
 
+	clock_t begin = clock();
 	// apply genetic algorithm to find a solution
 	solution_t* solution = genetic_algorithm(population);
 	if (solution)
@@ -188,6 +195,19 @@ int main()
 		}
 		printf("\n");
 	}
+	clock_t end = clock();
+	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+	printf("Elapsed: %f miliseconds\n", time_spent*1000);
+
+	fprintf(file, "queens = \'[");
+	for (int i = 0; i < 8; ++i)
+	{
+		fprintf(file, "{\"pos\" : %d", solution->chromosome->data[i]);
+		if (i == 7) fprintf(file, "}");
+		else fprintf(file, "},");
+	}
+	fprintf(file, "]\';");
+	fclose(file);
 
 	free_population(population);
 
